@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MyController {
@@ -20,17 +21,33 @@ public class MyController {
 	}
 
 	@GetMapping("my/result")
-	public String result_get(HttpServletRequest request,Model model) {
+	public String result_get(HttpServletRequest request, Model model) {
+		String name = request.getParameter("name");
+		String age = request.getParameter("age");
+
 		System.out.println("get방식으로 들어왔습니다");
+		System.out.println("name : " + name);
+		System.out.println("age : " + age);
+		
+		model.addAttribute("method",request.getMethod());
+		model.addAttribute("name",name);
+		model.addAttribute("name",age);
 		return "/get_post/result";
 	}
+
+	// @PostMapping("my/result")
 	
-	//@PostMapping("my/result")
 	@RequestMapping(value = "my/result", method = RequestMethod.POST)
-	public String result_post() {
+	public String result_post(HttpServletRequest request, Model model,
+			@RequestParam("name") String name,
+			@RequestParam("age") String age) {
 		System.out.println("post방식으로 들어왔습니다");
+
+		model.addAttribute("method",request.getMethod());
+		model.addAttribute("name",name);
+		model.addAttribute("age",age);
+
 		return "/get_post/result";
 	}
-	
-	
+
 }
